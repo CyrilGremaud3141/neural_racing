@@ -1,9 +1,9 @@
 import math
 
 class Track:
-    def __init__(self, points, widht):
+    def __init__(self, points, width):
         self.points = points
-        self.widht = width
+        self.width = width
         self.distCache = {}
     
     def getStartPostion(self):
