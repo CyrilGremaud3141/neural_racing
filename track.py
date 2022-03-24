@@ -31,15 +31,19 @@ class Track:
     def getOffset(self, x, y):
         rx = round(x)
         ry = round(y)
-        key = rx + "_" + ry
-        cached = self.distCache[key]
-        if cached and cached < 0.9 * self.width:
-            return cached
+        key = str(rx) + "_" + str(ry)
+        if key in self.distCache.keys():
+            cached = self.distCache[key]
+            if cached < 0.9 * self.width:
+                return cached
+            else:
+                self.distCache[key] = self.getExactOffset(rx, ry)
+                return self.getExactOffset(x, y)
         else:
             self.distCache[key] = self.getExactOffset(rx, ry)
             return self.getExactOffset(x, y)
 
-    def scan(x0, y0, dir):
+    def scan(self, x0, y0, dir):
         rmax = self.width / 2
         x = x0
         y = y0
