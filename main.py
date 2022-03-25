@@ -31,9 +31,9 @@ def setup():
     render = Render(track, 1000, 500)
     for i in range(10000):
         render.render()
-        ex, ey, d = track.scan(143, 127, i/20)
-        render.renderLine(143, 122, ex, ey)
-        time.sleep(0.1)
+    #     ex, ey, d = track.scan(143, 112, i/20)
+    #     render.renderLine(143, 112, ex, ey)
+    #     time.sleep(0.1)
         
 
 
