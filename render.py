@@ -9,32 +9,25 @@ class Render:
         self.points = track.points
         self.width = track.width
         self.resolution = res_y, res_x, 3
-        # self.screen = pygame.display.set_mode(self.resolution)
+        self.img = np.zeros(self.resolution, np.uint8)
 
 
     def render(self):
-        # self.screen.fill((0,0,0))
-
-        # pygame.draw.polygon(self.screen, (255, 0, 0), self.points, width=self.width)
-        # for point in self.points:
-        #     pygame.draw.circle(self.screen, (255, 0, 0), point, self.width/2 -2)
-
-            
-
-        # pygame.display.update()
-
-
-        img = np.zeros(self.resolution, np.uint8)
+        self.img = np.zeros(self.resolution, np.uint8)
         pts = np.array(self.points, np.int32)
         pts = pts.reshape((-1,1,2))
-        cv.polylines(img,[pts],True,(0,255,255), self.width)
+        cv.polylines(self.img,[pts],True,(0,255,255), self.width)
+        
 
-        cv.imshow("image", img)
-        cv.waitKey(0)
+    def renderCar(self, x, y):
+        cv.circle(self.img, (x, y), 1, (0,0,255), 2)
 
     def renderLine(self, x1, y1, x2, y2):
-        pygame.draw.line(self.screen, (0, 255, 0), (x1, y1), (x2, y2))
-        pygame.display.update()
+        cv.line(self.img, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 1)
+
+    def show(self):
+        cv.imshow("image", self.img)
+        cv.waitKey(1)
 
 
 
