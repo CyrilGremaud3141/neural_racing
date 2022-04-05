@@ -1,9 +1,10 @@
 import random
 import math
 class Neuron:
-    def __init__(self, input_weights, bias):
-        self.input_weights = [random.random()] * input_weights
-        self.bias = bias
+    def __init__(self, input_weights):
+        self.input_weights = [random.random() for _ in range(input_weights)]
+        self.in_size = input_weights
+        self.bias = random.random()
 
     def fire(self, ins):
         summe = 0
@@ -14,18 +15,23 @@ class Neuron:
 
     def activation(self, number):
         return 1/ (1 + math.exp(number))
+    
+    def randomize(self):
+        self.input_weights = [random.random() for _ in range(self.in_size)]
+
+
 class NeuralNet:
     def __init__(self, input_size, hidden_sizes, output_size):
         self.net = []
-        self.weights = []
 
         self.shape = hidden_sizes + [output_size]
         self.layer_sizes = [input_size] + hidden_sizes + [output_size]
 
         for i in range(len(self.shape)):
-            self.net.append([Neuron(self.layer_sizes[i], random.random())] * self.shape[i])
-
-
+            layer = []
+            for neur in range(self.shape[i]):
+                layer.append(Neuron(self.layer_sizes[i]))
+            self.net.append(layer)
 
 
     def forward(self, input_activations):
@@ -40,5 +46,6 @@ class NeuralNet:
 
 if __name__ == '__main__':
     nn = NeuralNet(6, [4, 5], 2)
+    print(nn.net)
 
     print(nn.forward([0.5, 0.5, 0.5, 0.5, 0.5, 0.5]))
