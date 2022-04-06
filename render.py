@@ -19,8 +19,8 @@ class Render:
         cv.polylines(self.img,[pts],True,(0,255,255), self.width)
         
 
-    def renderCar(self, x, y):
-        cv.circle(self.img, (x, y), 1, (0,0,255), 2)
+    def renderCar(self, x, y, score):
+        cv.circle(self.img, (x, y), 1, (0,0,score * 50), 2)
 
     def renderLine(self, x1, y1, x2, y2):
         cv.line(self.img, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 1)

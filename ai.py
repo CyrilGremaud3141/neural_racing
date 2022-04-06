@@ -14,7 +14,7 @@ class Neuron:
         return self.activation(summe)
 
     def activation(self, number):
-        return 1/ (1 + math.exp(number))
+        return max(0, number)
     
     def randomize(self):
         self.input_weights = [random.random() for _ in range(self.in_size)]

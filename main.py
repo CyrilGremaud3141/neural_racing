@@ -18,10 +18,10 @@ from copy import deepcopy
 # Race between two random cars
 # Replace dummy network with your network later
 
-population_size = 500
-generations = 10
+population_size = 100
+generations = 10000
 
-rand_cars = 350
+rand_cars = 10
 
 
 track = setupMonaco()
@@ -38,7 +38,7 @@ def step(car):
 		car.updateScore()
 		if car.checkCollision() or car.score > 2000:
 			car.gameOver = True
-	render.renderCar(int(car.x), int(car.y))
+	render.renderCar(int(car.x), int(car.y), car.score)
 
 render = Render(track, 1000, 500)
 
@@ -62,6 +62,8 @@ def newCars(cs):
 		
 		cars.append(c)
 
+	for c in cars:
+		c.reset()
 	return cars
 
 
@@ -71,7 +73,7 @@ for i in range(population_size):
 
 for gen in range(generations):
 	print(gen)	
-	for timesteps in tqdm(range(300)):
+	for timesteps in tqdm(range(500 + (2 * gen))):
 		render.render()
 		for car in cars:
 			step(car)
