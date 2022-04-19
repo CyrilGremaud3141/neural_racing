@@ -73,7 +73,6 @@ class NeuralNet:
         return out
 
 
-
     def update_dependencies(self):
         for no in self.nodes:
             no.dependencies = []
