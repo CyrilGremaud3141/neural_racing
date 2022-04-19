@@ -43,6 +43,7 @@ class Car:
 		if checkPoint < 0.05 * self.lastCheckPoint:
 			self.score += 0.1
 			self.lastCheckPoint = checkPoint
+		
 		return self.score
 
 	# updateScore() {
