@@ -18,7 +18,7 @@ from copy import deepcopy
 # Race between two random cars
 # Replace dummy network with your network later
 
-population_size = 100
+population_size = 50
 generations = 10000
 
 rand_cars = 10
@@ -45,25 +45,14 @@ render = Render(track, 1000, 500)
 
 def newCars(cs):
 	cars = []
-	car1 = deepcopy(cs[0])
-	car2 = deepcopy(cs[1])
-
-	cars.append(car1)
-	cars.append(car2)
-	for r in range(rand_cars):
-		cars.append(CarAI(track))
-
-	for i in range(population_size - 2 - rand_cars):
-		c = deepcopy(car1)
-		lay = random.randint(0, len(c.nn.net)-1)
-		neu = random.randint(0, len(c.nn.net[lay])-1)
-		# c.nn.net[lay][neu] = deepcopy(car2.nn.net[lay][neu])
-		c.nn.net[lay][neu].randomize()
-		
-		cars.append(c)
-
-	for c in cars:
-		c.reset()
+	best_car = cs[0]
+	best_car.reset()
+	for i in range(population_size):
+		cars.append(deepcopy(best_car))
+	
+	for car in cars[1:]:
+		car.nn.mutate()
+	
 	return cars
 
 
@@ -73,7 +62,7 @@ for i in range(population_size):
 
 for gen in range(generations):
 	print(gen)	
-	for timesteps in tqdm(range(500 + (2 * gen))):
+	for timesteps in tqdm(range(500 + (50 * gen))):
 		render.render()
 		for car in cars:
 			step(car)

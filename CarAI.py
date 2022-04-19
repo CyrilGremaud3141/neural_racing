@@ -1,11 +1,11 @@
 from Car import Car
-from ai import NeuralNet
+from neat import NeuralNet
 
 class CarAI(Car):
 
 	def __init__(self, track):
 		super().__init__(track)
-		self.nn = NeuralNet(6, [10], 2)
+		self.nn = NeuralNet(6, 2)
 
 
 	def control(self):
