@@ -9,15 +9,15 @@ class Render:
         self.points = track.points
         self.width = track.width
         self.resolution = res_y, res_x, 3
-        self.img = np.zeros(self.resolution, np.uint8)
+        self.bg_img = cv.imread('bg.png')
+        self.img = self.bg_img
 
 
     def render(self):
-        self.img = np.zeros(self.resolution, np.uint8)
+        self.img = self.bg_img
         pts = np.array(self.points, np.int32)
         pts = pts.reshape((-1,1,2))
         cv.polylines(self.img,[pts],True,(0,255,255), self.width)
-        
 
     def renderCar(self, x, y, score):
         cv.circle(self.img, (x, y), 1, (0,0,score * 50), 2)
