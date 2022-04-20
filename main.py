@@ -12,12 +12,14 @@ from tqdm import tqdm
 from multiprocessing import Process, Manager
 import random
 from copy import deepcopy
+from ShowNet import NetRender
 
 
 
 generations = 10000
-batch_size = 10
+batch_size = 15
 rand_cars = 10
+max_time_steps = 300
 
 num_processes = 24
 
@@ -38,12 +40,19 @@ def step(car, ren=False):
 		if car.checkCollision() or car.score > 2000:
 			car.gameOver = True
 	if ren:
-		render.renderCar(int(car.x), int(car.y), car.score)
+		render.renderCar(int(car.x), int(car.y), int(car.rot))
+
+def render_net(car):
+	net = car.nn
+	netrender.drawNet(net)
+	netrender.show()
 
 render = Render(track, 1000, 500)
-
+netrender = NetRender(1000, 500)
 
 def newCars(cs):
+	# random.shuffle(cs)
+	render_net(cs[0])
 	cars = []
 	best_cars = cs[:5]
 	for b in best_cars:
@@ -61,14 +70,14 @@ def newCars(cs):
 
 
 def train_batch(batch, process_idx, return_dict):
-	for timesteps in range(min(3000, 500 + (200 * gen))):
+	for timesteps in range(min(max_time_steps, 500 + (200 * gen))):
 		for car in batch:
 			step(car)
 
 	return_dict[process_idx] = batch
 
 def train_visualized_batch(batch):
-	for timesteps in tqdm(range(min(3000, 500 + (200 * gen)))):
+	for timesteps in tqdm(range(min(max_time_steps, 500 + (200 * gen)))):
 		render.render()
 		for car in batch:
 			step(car, ren=True)

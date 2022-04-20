@@ -115,16 +115,22 @@ class NeuralNet:
             node1 = random.choice(self.nodes)
             node2 = random.choice(self.nodes)
             dis = node2.pos - node1.pos
-        weight = random.random()
-        self.connections.append(Connection(node1, node2, weight))
-        self.update_dependencies()
+
+        for con in self.connections:
+            if con.input_node == node1 and con.output_node == node2:
+                self.connections.remove(con)
+                break
+        else:         
+            weight = random.random()
+            self.connections.append(Connection(node1, node2, weight))
+            self.update_dependencies()
 
     def mutate_connections(self):
         connection = random.choice(self.connections)
 
-        alpha = 0.5
+        factor = 0.5
 
-        change = ((random.random() * 2) - 1) * alpha
+        change = ((random.random() * 2) - 1) * factor
 
         connection.weight += change
 
@@ -132,9 +138,9 @@ class NeuralNet:
     def mutate(self):
         ran = random.random()
 
-        if ran < 0.1:
+        if ran < 0.2:
             self.mutate_add_node()
-        elif ran < 0.3:
+        elif ran < 0.5:
             self.mutate_add_connections()
         else:
             self.mutate_connections()
