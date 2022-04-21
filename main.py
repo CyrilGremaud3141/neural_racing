@@ -17,9 +17,9 @@ from ShowNet import NetRender
 
 
 generations = 10000
-batch_size = 15
+batch_size = 10
 rand_cars = 10
-max_time_steps = 300
+max_time_steps = 3000
 
 num_processes = 24
 

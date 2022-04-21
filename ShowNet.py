@@ -51,10 +51,10 @@ class NetRender:
                 color = (255 - col_val, 255 - col_val, col_val)
             else:
                 color = (col_val, 255 - col_val, 255 - col_val)
-            cv.line(self.img, pos_dic[conn.input_node], pos_dic[conn.output_node], color, min(4, max(1, (int(abs(weight * 3))))))
+            cv.line(self.img, pos_dic[conn.input_node], pos_dic[conn.output_node], color, min(4, max(1, (int(abs(weight * 1.5))))))
 
         for no in pos_dic:
-            cv.circle(self.img, pos_dic[no], 1, (0, 255, 0), 2)
+            cv.circle(self.img, pos_dic[no], 1, (0, 255, 0), 5)
 
 
     def show(self):

@@ -1,11 +1,13 @@
 import random
+import math
 
 class Node:
-    def __init__(self, position_type):
+    def __init__(self, position_type, bias):
         self.position_type = position_type #int 0=input, 1=output 2=hidden
         self.dependencies = []
         self.connected_nodes = []
         self.value = None
+        self.bias = bias
 
         #position prevents loops and connections to itself
         
@@ -13,10 +15,13 @@ class Node:
 
     def fire(self):
         if self.value is not None:
-            return self.value
+            return self.activation(self.value)
         else:
-            self.value = sum([no.fire() for no in self.dependencies])
-            return self.value
+            self.value = sum([no.fire() for no in self.dependencies]) + self.bias
+            return self.activation(self.value)
+
+    def activation(self, x):
+        return max(0.2 * x, x)
 
     def update_position(self):
         if self.position_type == 0:
@@ -38,6 +43,7 @@ class Connection:
     def fire(self):
         return self.input_node.fire() * self.weight
 
+
 class NeuralNet:
     def __init__(self, input_size, output_size):
         self.nodes = []
@@ -46,9 +52,9 @@ class NeuralNet:
         self.output_size = output_size
 
         for n in range(input_size):
-            self.nodes.append(Node(0))
+            self.nodes.append(Node(0, (random.random() * 2) - 1))
         for n in range(output_size):
-            self.nodes.append(Node(1))
+            self.nodes.append(Node(1, (random.random() * 2) - 1))
 
         for inp in range(input_size):
             for out in range(input_size, input_size + output_size):
@@ -73,6 +79,7 @@ class NeuralNet:
         return out
 
 
+
     def update_dependencies(self):
         for no in self.nodes:
             no.dependencies = []
@@ -85,16 +92,15 @@ class NeuralNet:
             end.connected_nodes.append(begin)
         
 
-
-    
     def update_positions(self):
         for no in self.nodes:
             no.update_position()
 
 
+
     def mutate_add_node(self):
         connection = random.choice(self.connections)
-        new_node = Node(2)
+        new_node = Node(2, (random.random() * 2) - 1)
         self.nodes.append(new_node)
 
         input_node = connection.input_node
@@ -106,7 +112,6 @@ class NeuralNet:
         self.connections.append(Connection(new_node, output_node, weight))
         self.update_dependencies()
         new_node.update_position()
-
 
 
     def mutate_add_connections(self):
@@ -125,6 +130,15 @@ class NeuralNet:
             self.connections.append(Connection(node1, node2, weight))
             self.update_dependencies()
 
+    
+    def mutate_node(self):
+        node = random.choice(self.nodes)
+        
+        factor = 0.5
+
+        change = ((random.random() * 2) - 1) * factor
+
+
     def mutate_connections(self):
         connection = random.choice(self.connections)
 
@@ -142,6 +156,8 @@ class NeuralNet:
             self.mutate_add_node()
         elif ran < 0.5:
             self.mutate_add_connections()
+        elif ran < 0.75:
+            self.mutate_node()
         else:
             self.mutate_connections()
 
