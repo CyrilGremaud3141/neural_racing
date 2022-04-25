@@ -75,7 +75,9 @@ class NeuralNet:
         
         for no in self.nodes:
             no.value = None
-        
+
+        for i in range(len(out)):
+            out[0] *= 10
         return out
 
 
@@ -151,14 +153,16 @@ class NeuralNet:
 
     def mutate(self):
         ran = random.random()
-
-        if ran < 0.2:
+        if ran < 0.25:
             self.mutate_add_node()
-        elif ran < 0.5:
+        ran = random.random()
+        if ran < 0.25:
             self.mutate_add_connections()
-        elif ran < 0.75:
+        ran = random.random()
+        if ran < 0.5:
             self.mutate_node()
-        else:
+        ran = random.random()
+        if ran < 0.5:
             self.mutate_connections()
 
 

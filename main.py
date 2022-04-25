@@ -17,11 +17,11 @@ from ShowNet import NetRender
 
 
 generations = 10000
-batch_size = 10
+batch_size = 15
 rand_cars = 10
 max_time_steps = 3000
 
-num_processes = 24
+num_processes = 8
 
 population_size = num_processes * batch_size
 
@@ -69,7 +69,7 @@ def newCars(cs):
 	return cars
 
 
-def train_batch(batch, process_idx, return_dict):
+def train_batch(batch, process_idx, return_dict, gen):
 	for timesteps in range(min(max_time_steps, 500 + (200 * gen))):
 		for car in batch:
 			step(car)
@@ -84,46 +84,47 @@ def train_visualized_batch(batch):
 		render.show()
 
 
+if __name__ == '__main__':
+	cars = []
+	for i in range(population_size):
+		cars.append(CarAI(track))
 
-cars = []
-for i in range(population_size):
-	cars.append(CarAI(track))
+	for gen in range(generations):
+		batches = []
+		batch = []
+		for car in cars:
+			batch.append(car)
+			if len(batch) == batch_size:
+				batches.append(batch)
+				batch = []
 
-for gen in range(generations):
-	print(gen)	
-	
-	batches = []
-	batch = []
+
+		processes = []
+		return_dict = Manager().dict()
+		for i, batch in enumerate(batches[1:]):
+			p = Process(target=train_batch, args=[batch, i, return_dict, gen])
+			p.start()
+			processes.append(p)
+
+		train_visualized_batch(batches[0])
+
+		for p in processes:
+			p.join()
+		cars = batches[0]
+		for b in return_dict.values():
+			cars += b
+
+
+		cars.sort(key=lambda car: car.score, reverse=True)
+
+		print(f'Generation: {gen}, best score: {cars[0].score}')
+
+		cars = newCars(cars)
+
+
+	# # clearTraces()
+
+	# # saveTraces(cars)
+
 	for car in cars:
-		batch.append(car)
-		if len(batch) == batch_size:
-			batches.append(batch)
-			batch = []
-
-
-	processes = []
-	return_dict = Manager().dict()
-	for i, batch in enumerate(batches[1:]):
-		p = Process(target=train_batch, args=[batch, i, return_dict])
-		p.start()
-		processes.append(p)
-
-	train_visualized_batch(batches[0])
-
-	for p in processes:
-		p.join()
-	cars = batches[0]
-	for b in return_dict.values():
-		cars += b
-
-
-	cars.sort(key=lambda car: car.score, reverse=True)
-
-	cars = newCars(cars)
-
-# # clearTraces()
-
-# # saveTraces(cars)
-
-for car in cars:
-	print(car.score, car.x, car.y, car.getLifetime())
+		print(car.score, car.x, car.y, car.getLifetime())
