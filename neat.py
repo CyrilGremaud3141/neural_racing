@@ -34,15 +34,34 @@ class Node:
                 positions.append(no.pos)
             self.pos = sum(positions) / len(positions)
         
+    def get_str(self):
+        s = str(self.position_type) + ';' + str(self.bias) + '\n'
+        return s
+
+    def load_str(self, s):
+        p, b = s.split(';')
+        self.position_type = int(p)
+        self.bias = float(b)
+        
 
 class Connection:
     def __init__(self, input_node, output_node, weight):
         self.input_node = input_node
         self.output_node = output_node
         self.weight = weight
+
     def fire(self):
         return self.input_node.fire() * self.weight
-
+    
+    def get_str(self, nodes):
+        s = str(nodes.index(self.input_node)) + ';' + str(nodes.index(self.output_node)) + ';' + str(self.weight) + '\n'
+        return s
+    
+    def load_str(self, nodes, c):
+        n1, n2, w = c.split(';')
+        self.input_node = nodes[int(n1)]
+        self.output_node = nodes[int(n2)]
+        self.weight = float(w)
 
 class NeuralNet:
     def __init__(self, input_size, output_size):
@@ -78,6 +97,7 @@ class NeuralNet:
 
         for i in range(len(out)):
             out[0] *= 10
+
         return out
 
 
@@ -153,10 +173,10 @@ class NeuralNet:
 
     def mutate(self):
         ran = random.random()
-        if ran < 0.25:
+        if ran < 0.5:
             self.mutate_add_node()
         ran = random.random()
-        if ran < 0.25:
+        if ran < 0.5:
             self.mutate_add_connections()
         ran = random.random()
         if ran < 0.5:
@@ -164,6 +184,47 @@ class NeuralNet:
         ran = random.random()
         if ran < 0.5:
             self.mutate_connections()
+    
+    def save(self, filename):
+        path = filename + '.txt'
+        node_str = []
+        conn_str = []
+        for node in self.nodes:
+            node_str.append(node.get_str())
+        for conn in self.connections:
+            conn_str.append(conn.get_str(self.nodes))
+
+        str_list = node_str + ['-\n'] + conn_str
+
+        with open(path, 'w+') as f:
+            f.writelines(str_list)
+    
+    def load(self, filename):
+        path = filename + '.txt'
+        with open(path, 'r') as f:
+            lines = f.readlines()
+
+        data = list(map(lambda x: x.replace('\n', ''), lines))
+
+        split_point = data.index('-')
+        node_str = data[:split_point]
+        conn_str = data[split_point+1:]
+
+        self.nodes = []
+        self.connections = []
+
+        for n in node_str:
+            new_node = Node(0, 0)
+            new_node.load_str(n)
+            self.nodes.append(new_node)
+
+        for c in conn_str:
+            new_conn = Connection(None, None, 0)
+            new_conn.load_str(self.nodes, c)
+            self.connections.append(new_conn)
+
+        self.update_dependencies()
+        new_node.update_position()
 
 
         
@@ -172,5 +233,6 @@ class NeuralNet:
 
 if __name__ == '__main__':
     nn = NeuralNet(6, 2)
+    nn.load('moin')
 
-    print(nn.forward([0.5, 0.5, 0.5, 0.5, 0.5, 0.5]))
+    # print(nn.forward([0.5, 0.5, 0.5, 0.5, 0.5, 0.5]))

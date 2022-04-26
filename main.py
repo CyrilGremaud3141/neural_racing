@@ -116,6 +116,7 @@ if __name__ == '__main__':
 
 
 		cars.sort(key=lambda car: car.score, reverse=True)
+		cars[0].nn.save("moin")
 
 		print(f'Generation: {gen}, best score: {cars[0].score}')
 
