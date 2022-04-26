@@ -13,11 +13,12 @@ from multiprocessing import Process, Manager
 import random
 from copy import deepcopy
 from ShowNet import NetRender
+import os
 
 
 
 generations = 10000
-batch_size = 15
+batch_size = 25
 rand_cars = 10
 max_time_steps = 3000
 
@@ -70,14 +71,14 @@ def newCars(cs):
 
 
 def train_batch(batch, process_idx, return_dict, gen):
-	for timesteps in range(min(max_time_steps, 500 + (200 * gen))):
+	for timesteps in range(min(max_time_steps, 500 + (100 * gen))):
 		for car in batch:
 			step(car)
 
 	return_dict[process_idx] = batch
 
 def train_visualized_batch(batch):
-	for timesteps in tqdm(range(min(max_time_steps, 500 + (200 * gen)))):
+	for timesteps in tqdm(range(min(max_time_steps, 500 + (100 * gen)))):
 		render.render()
 		for car in batch:
 			step(car, ren=True)
@@ -86,9 +87,12 @@ def train_visualized_batch(batch):
 
 if __name__ == '__main__':
 	cars = []
+	name = 'moin'
 	for i in range(population_size):
 		cars.append(CarAI(track))
-	cars[0].nn.load('moin')
+
+	if os.path.isfile(name + '.txt'):
+		cars[0].nn.load(name)
 	render_net(cars[0])
 
 	for gen in range(generations):
