@@ -13,10 +13,12 @@ import os
 
 
 
+
 generations = 10000
-batch_size = 25
+batch_size = 10
 rand_cars = 10
 max_time_steps = 3000
+min_time_steps = 3000
 
 num_processes = 24
 
@@ -34,7 +36,7 @@ def step(car, ren=False):
 		car.control()
 		car.move()
 		car.updateScore()
-		if car.checkCollision() or car.score > 2000:
+		if car.checkCollision() or car.score > 5000:
 			car.gameOver = True
 	if ren:
 		render.renderCar(int(car.x), int(car.y), int(car.rot))
@@ -67,14 +69,14 @@ def newCars(cs):
 
 
 def train_batch(batch, process_idx, return_dict, gen):
-	for timesteps in range(min(max_time_steps, 500 + (300 * gen))):
+	for timesteps in range(min(max_time_steps, min_time_steps + (300 * gen))):
 		for car in batch:
 			step(car)
 
 	return_dict[process_idx] = batch
 
 def train_visualized_batch(batch):
-	for timesteps in tqdm(range(min(max_time_steps, 500 + (300 * gen)))):
+	for timesteps in tqdm(range(min(max_time_steps, min_time_steps + (300 * gen)))):
 		render.render()
 		for car in batch:
 			step(car, ren=True)
@@ -118,10 +120,9 @@ if __name__ == '__main__':
 
 
 		cars.sort(key=lambda car: car.score, reverse=True)
-		cars[0].nn.save("moin")
+		cars[0].nn.save("moin1")
 
 		print(f'Generation: {gen}, best score: {cars[0].score}')
-
 		cars = newCars(cars)
 
 

@@ -37,7 +37,7 @@ def step(car, ren=False):
         car.control()
         car.move()
         car.updateScore()
-        if car.checkCollision() or car.score > 2000:
+        if car.checkCollision():
             car.gameOver = True
     if ren:
         render.render()
@@ -65,3 +65,4 @@ while True:
         print(f'steps: {steps} score: {car.score} score per step: {car.score/steps}')
         time.sleep(1)
         car.reset()
+        steps = 0
