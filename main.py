@@ -1,7 +1,3 @@
-from hashlib import new
-
-from cv2 import cartToPolar
-from sklearn.ensemble import RandomTreesEmbedding
 from Track import *
 from Car import *
 from CarAI import *
@@ -22,7 +18,7 @@ batch_size = 25
 rand_cars = 10
 max_time_steps = 3000
 
-num_processes = 8
+num_processes = 24
 
 population_size = num_processes * batch_size
 
@@ -71,14 +67,14 @@ def newCars(cs):
 
 
 def train_batch(batch, process_idx, return_dict, gen):
-	for timesteps in range(min(max_time_steps, 500 + (100 * gen))):
+	for timesteps in range(min(max_time_steps, 500 + (300 * gen))):
 		for car in batch:
 			step(car)
 
 	return_dict[process_idx] = batch
 
 def train_visualized_batch(batch):
-	for timesteps in tqdm(range(min(max_time_steps, 500 + (100 * gen)))):
+	for timesteps in tqdm(range(min(max_time_steps, 500 + (300 * gen)))):
 		render.render()
 		for car in batch:
 			step(car, ren=True)
