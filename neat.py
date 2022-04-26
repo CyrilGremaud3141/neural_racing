@@ -10,7 +10,7 @@ class Node:
         self.bias = bias
 
         #position prevents loops and connections to itself
-        
+        self.pos = None
             
 
     def fire(self):
@@ -35,13 +35,14 @@ class Node:
             self.pos = sum(positions) / len(positions)
         
     def get_str(self):
-        s = str(self.position_type) + ';' + str(self.bias) + '\n'
+        s = str(self.position_type) + ';' + str(self.bias) + ';' + str(self.pos) + '\n'
         return s
 
     def load_str(self, s):
-        p, b = s.split(';')
+        p, b, po = s.split(';')
         self.position_type = int(p)
         self.bias = float(b)
+        self.pos = float(po)
         
 
 class Connection:

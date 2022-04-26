@@ -88,6 +88,8 @@ if __name__ == '__main__':
 	cars = []
 	for i in range(population_size):
 		cars.append(CarAI(track))
+	cars[0].nn.load('moin')
+	render_net(cars[0])
 
 	for gen in range(generations):
 		batches = []
