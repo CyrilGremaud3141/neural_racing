@@ -21,6 +21,9 @@ class Render:
     def renderCar(self, x, y, rot):
         cv.circle(self.img, (x, y), 1, (0,255,255), 2)
 
+    def renp(self, x, y):
+        cv.circle(self.img, (x, y), 1, (255, 255, 0), 2)
+
     def renderLine(self, x1, y1, x2, y2):
         cv.line(self.img, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 1)
 
