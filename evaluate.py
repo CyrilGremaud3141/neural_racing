@@ -62,6 +62,8 @@ while True:
     step(car, True)
     steps += 1
     if car.gameOver:
+        clearTraces()
+        saveTraces([car])
         print(f'steps: {steps} score: {car.score} score per step: {car.score/steps}')
         time.sleep(1)
         car.reset()

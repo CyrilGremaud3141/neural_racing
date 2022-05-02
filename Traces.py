@@ -1,10 +1,9 @@
 import os
 import json
 
-tracepath = "../data"
+tracepath = "data"
 
 def clearTraces():
-	
 	files = os.listdir(tracepath)
 	tracefiles = [f for f in files if f.startswith("traces") and f.endswith(".json")]
 	for t in tracefiles:

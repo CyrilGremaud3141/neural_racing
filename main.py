@@ -17,11 +17,11 @@ import os
 
 generations = 10000
 batch_size = 10
-rand_cars = 10
-max_time_steps = 3000
-min_time_steps = 3000
+rand_cars = 0
+max_time_steps = 500
+min_time_steps = 1000
 
-num_processes = 24
+num_processes = 8
 
 population_size = num_processes * batch_size
 
@@ -86,7 +86,7 @@ def train_visualized_batch(batch):
 
 if __name__ == '__main__':
 	cars = []
-	name = 'moin'
+	name = 'fast'
 	for i in range(population_size):
 		cars.append(CarAI(track))
 
@@ -121,7 +121,7 @@ if __name__ == '__main__':
 
 
 		cars.sort(key=lambda car: car.score, reverse=True)
-		cars[0].nn.save("moin1")
+		cars[0].nn.save("fast1")
 
 		print(f'Generation: {gen}, best score: {cars[0].score}')
 		cars = newCars(cars)

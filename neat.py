@@ -98,6 +98,7 @@ class NeuralNet:
 
         for i in range(len(out)):
             out[0] *= 1
+            # out[i] = 1/(1 + math.exp(-out[i]))
 
         return out
 
