@@ -18,8 +18,8 @@ import os
 generations = 10000
 batch_size = 10
 rand_cars = 0
-max_time_steps = 500
-min_time_steps = 1000
+max_time_steps = 5000
+min_time_steps = 500
 
 num_processes = 8
 

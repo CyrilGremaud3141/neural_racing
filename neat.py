@@ -158,7 +158,7 @@ class NeuralNet:
     def mutate_node(self):
         node = random.choice(self.nodes)
         
-        factor = 0.5
+        factor = 2
 
         change = ((random.random() * 2) - 1) * factor
 
@@ -166,7 +166,7 @@ class NeuralNet:
     def mutate_connections(self):
         connection = random.choice(self.connections)
 
-        factor = 0.5
+        factor = 2
 
         change = ((random.random() * 2) - 1) * factor
 

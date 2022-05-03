@@ -12,5 +12,6 @@ class CarAI(Car):
 		scans = self.getScans()
 		results = self.nn.forward([*scans, self.v])
 		self.acc = -1 + 2 * results[0]
+		self.acc = 1
 		self.steer = -1 + 2 * results[1]
 
