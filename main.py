@@ -16,14 +16,17 @@ import os
 
 
 generations = 10000
-batch_size = 10
+batch_size = 20
 rand_cars = 0
 max_time_steps = 5000
 min_time_steps = 500
 
-num_processes = 8
+num_processes = 24
 
 population_size = num_processes * batch_size
+
+randomT = True
+
 
 track = setupMonaco()
 
@@ -51,6 +54,7 @@ render = Render(track, 1000, 500)
 netrender = NetRender(1000, 500)
 
 def newCars(cs):
+	global render
 	# random.shuffle(cs)
 	render_net(cs[0])
 	cars = []
@@ -66,6 +70,14 @@ def newCars(cs):
 	for car in cars[5:]:
 		car.nn.mutate()
 	
+	if randomT:
+		newTrack = ranTrack()
+		render = Render(newTrack, 1000, 500)
+		for car in cars:
+			car.track = newTrack
+			car.reset()
+
+
 	return cars
 
 
@@ -86,7 +98,7 @@ def train_visualized_batch(batch):
 
 if __name__ == '__main__':
 	cars = []
-	name = 'fast'
+	name = 'randomTrack'
 	for i in range(population_size):
 		cars.append(CarAI(track))
 
@@ -121,7 +133,7 @@ if __name__ == '__main__':
 
 
 		cars.sort(key=lambda car: car.score, reverse=True)
-		cars[0].nn.save("fast1")
+		cars[0].nn.save("randomTrack")
 
 		print(f'Generation: {gen}, best score: {cars[0].score}')
 		cars = newCars(cars)

@@ -6,15 +6,15 @@ import alphashape
 
 
 def ranTrack():
-    width = 5
-    num_points = 50
+    width = 22
+    num_points = 100
     x, y = 1000, 500
 
     points = []
     for i in range(num_points):
         points.append([int(random.random() * x), int(random.random() * y)])
 
-    alpha = 0.95 * alphashape.optimizealpha(points)
+    alpha = alphashape.optimizealpha(points)
     hull = alphashape.alphashape(points, alpha)
     hull_points = hull.exterior.coords.xy
     polygon = []
@@ -39,11 +39,15 @@ def ranTrack():
             points[i] = [int((p[0] + p1[0] + p2[0]) / 3), int((p[1] + p1[1] + p2[1]) / 3)]
 
 
-        track = Track(points, width)
-        render = Render(track, 1000, 500)
-        render.render()
-        for i in range(200):
-            render.show()
+        # track = Track(points, width)
+        # render = Render(track, 1000, 500)
+        # render.render()
+        # for i in range(200):
+        #     render.show()
+    
+
+    for i in range(len(points)):
+        points[i] = [int(points[i][0] * 2), int(points[i][1] * 2)]
     
 
 
@@ -66,5 +70,5 @@ if __name__ == '__main__':
         track = ranTrack()
         render = Render(track, 1000, 500)
         render.render()
-        for i in range(1000):
+        for i in range(100):
             render.show()
