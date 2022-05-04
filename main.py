@@ -16,7 +16,7 @@ import os
 
 
 generations = 10000
-batch_size = 20
+batch_size = 15
 rand_cars = 0
 max_time_steps = 5000
 min_time_steps = 500
@@ -133,7 +133,7 @@ if __name__ == '__main__':
 
 
 		cars.sort(key=lambda car: car.score, reverse=True)
-		cars[0].nn.save("randomTrack")
+		cars[0].nn.save("nets/gen" + str(gen).zfill(5))
 
 		print(f'Generation: {gen}, best score: {cars[0].score}')
 		cars = newCars(cars)
