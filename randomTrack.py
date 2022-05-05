@@ -49,9 +49,9 @@ def ranTrack():
     for i in range(len(points)):
         points[i] = [int(points[i][0] * 2), int(points[i][1] * 2)]
     
-    r = random.random()
-    if r > 0.5:
-        points.reverse()
+    # r = random.random()
+    # if r > 0.5:
+    #     points.reverse()
 
 
     track = Track(points, width)

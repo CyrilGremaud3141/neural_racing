@@ -16,16 +16,16 @@ import os
 
 
 generations = 10000
-batch_size = 15
+batch_size = 10
 rand_cars = 0
 max_time_steps = 5000
-min_time_steps = 500
+min_time_steps = 5000
 
 num_processes = 24
 
 population_size = num_processes * batch_size
 
-randomT = True
+randomT = False
 
 
 track = setupMonaco()
@@ -67,7 +67,7 @@ def newCars(cs):
 	for i in range(rand_cars):
 		cars.append(CarAI(track))
 	
-	for car in cars[5:]:
+	for car in tqdm(cars[5:]):
 		car.nn.mutate()
 	
 	if randomT:
@@ -98,7 +98,7 @@ def train_visualized_batch(batch):
 
 if __name__ == '__main__':
 	cars = []
-	name = 'randomTrack'
+	name = 'nets/gen00057'
 	for i in range(population_size):
 		cars.append(CarAI(track))
 

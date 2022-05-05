@@ -49,7 +49,7 @@ def render_net(car):
     netrender.drawNet(net)
     netrender.show()
 
-name = 'nets/gen13'
+name = 'nets/gen69'
 car = CarAI(track)
 
 if os.path.isfile(name + '.txt'):
