@@ -97,12 +97,8 @@ class NeuralNet:
             no.value = None
 
         for i in range(len(out)):
-<<<<<<< HEAD
             out[0] *= 1
             # out[i] = 1/(1 + math.exp(-out[i]))
-=======
-            out[0] *= 10
->>>>>>> parent of 8c2bc78 (evaluation file)
 
         return out
 
@@ -179,7 +175,7 @@ class NeuralNet:
 
     def mutate(self):
         ran = random.random()
-        if ran < 0.5:
+        if ran < 0.75:
             self.mutate_add_node()
         ran = random.random()
         if ran < 0.5:
