@@ -15,3 +15,4 @@ class CarAI(Car):
 		self.acc = 1
 		self.steer = -1 + 2 * results[1]
 
+		self.acc = min(self.acc, 10)

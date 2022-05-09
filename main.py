@@ -1,3 +1,7 @@
+from hashlib import new
+
+from cv2 import cartToPolar
+from sklearn.ensemble import RandomTreesEmbedding
 from Track import *
 from Car import *
 from CarAI import *
@@ -16,12 +20,12 @@ import os
 
 
 generations = 10000
-batch_size = 10
+batch_size = 15
 rand_cars = 0
 max_time_steps = 5000
 min_time_steps = 5000
 
-num_processes = 24
+num_processes = 8
 
 population_size = num_processes * batch_size
 
@@ -82,14 +86,22 @@ def newCars(cs):
 
 
 def train_batch(batch, process_idx, return_dict, gen):
+<<<<<<< HEAD
 	for timesteps in range(min(max_time_steps, min_time_steps + (300 * gen))):
+=======
+	for timesteps in range(min(max_time_steps, 500 + (100 * gen))):
+>>>>>>> parent of 8c2bc78 (evaluation file)
 		for car in batch:
 			step(car)
 
 	return_dict[process_idx] = batch
 
 def train_visualized_batch(batch):
+<<<<<<< HEAD
 	for timesteps in tqdm(range(min(max_time_steps, min_time_steps + (300 * gen)))):
+=======
+	for timesteps in tqdm(range(min(max_time_steps, 500 + (100 * gen)))):
+>>>>>>> parent of 8c2bc78 (evaluation file)
 		render.render()
 		for car in batch:
 			step(car, ren=True)
@@ -98,7 +110,7 @@ def train_visualized_batch(batch):
 
 if __name__ == '__main__':
 	cars = []
-	name = 'nets/gen00057'
+	name = 'nets/gen00051'
 	for i in range(population_size):
 		cars.append(CarAI(track))
 
@@ -133,10 +145,11 @@ if __name__ == '__main__':
 
 
 		cars.sort(key=lambda car: car.score, reverse=True)
-		cars[0].nn.save("nets/gen" + str(gen).zfill(5))
+		cars[0].nn.save("nets/gen" + str(gen + 104).zfill(5))
 
 		print(f'Generation: {gen}, best score: {cars[0].score}')
 		cars = newCars(cars)
+		track.distCache = []
 
 
 	# # clearTraces()
