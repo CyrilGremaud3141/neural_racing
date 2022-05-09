@@ -16,7 +16,7 @@ import os
 
 
 generations = 10000
-batch_size = 10
+batch_size = 15
 rand_cars = 0
 max_time_steps = 5000
 min_time_steps = 5000
@@ -98,7 +98,7 @@ def train_visualized_batch(batch):
 
 if __name__ == '__main__':
 	cars = []
-	name = 'nets/gen00057'
+	name = 'nets/gen00051'
 	for i in range(population_size):
 		cars.append(CarAI(track))
 
@@ -133,10 +133,11 @@ if __name__ == '__main__':
 
 
 		cars.sort(key=lambda car: car.score, reverse=True)
-		cars[0].nn.save("nets/gen" + str(gen).zfill(5))
+		cars[0].nn.save("nets/gen" + str(gen + 104).zfill(5))
 
 		print(f'Generation: {gen}, best score: {cars[0].score}')
 		cars = newCars(cars)
+		track.distCache = []
 
 
 	# # clearTraces()
