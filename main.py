@@ -98,7 +98,7 @@ def train_visualized_batch(batch):
 
 if __name__ == '__main__':
 	cars = []
-	name = 'nets/gen00057'
+	name = 'nets/gen00000'
 	for i in range(population_size):
 		cars.append(CarAI(track))
 

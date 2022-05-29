@@ -21,6 +21,7 @@ class Node:
             return self.activation(self.value)
 
     def activation(self, x):
+        # return 1/(1 + math.exp(-x))
         return max(0.2 * x, x)
 
     def update_position(self):
@@ -97,8 +98,8 @@ class NeuralNet:
             no.value = None
 
         for i in range(len(out)):
-            out[0] *= 1
-            # out[i] = 1/(1 + math.exp(-out[i]))
+            # out[0] *= 1
+            out[i] = 1/(1 + math.exp(-out[i]))
 
         return out
 

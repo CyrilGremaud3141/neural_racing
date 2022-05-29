@@ -3,9 +3,13 @@ import random
 import math
 from render import Render
 import alphashape
+from Monaco import setupMonaco
 
 
 def ranTrack():
+    rn = random.random()
+    if rn > 0.8:
+        return setupMonaco()
     width = 22
     num_points = 100
     x, y = 1000, 500
